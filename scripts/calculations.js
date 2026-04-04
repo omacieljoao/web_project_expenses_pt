@@ -13,11 +13,11 @@ const expenseEntries = [
 ];
 
 for (let i = 0; i < expenseEntries.length; i++) {
-  totalExpensesValue += expenseEntries[i][2];
+  totalExpensesValue += expenseEntries[i][1];
 }
 
 function calculateAverageExpense() {
-  if (!expenseEntries) {
+  if (expenseEntries.length === 0) {
     return 0;
   } else {
     return totalExpensesValue / expenseEntries.length;
@@ -31,18 +31,18 @@ function calculateBalance() {
 function updateBalanceColor() {
   if (budgetValue - totalExpensesValue < 0) {
     balanceColor = "red";
-  } else if (budgetValue - totalExpensesValue < budgetValue * 0.25) {
+  } else if (calculateBalance() < budgetValue * 0.25) {
     balanceColor = "orange";
   } else {
     balanceColor = "green";
   }
 }
 
-function calculateCategoryExpenses(name) {
+function calculateCategoryExpenses(category) {
   let total = 0;
   for (let i = 0; i < expenseEntries.length; i++) {
-    if (expenseEntries[i][0] === name) {
-      total++;
+    if (expenseEntries[i][0] === category) {
+      total += expenseEntries[i][1];
     }
   }
   return total;
@@ -51,12 +51,12 @@ function calculateCategoryExpenses(name) {
 function calculateLargestCategory() {
   const categoriesTotals = [
     ["groceries", calculateCategoryExpenses("groceries")],
-    ["restaurants", calculateCategoryExpenses("restaurant")],
+    ["restaurants", calculateCategoryExpenses("restaurants")],
     ["transport", calculateCategoryExpenses("transport")],
     ["home", calculateCategoryExpenses("home")],
     ["subscriptions", calculateCategoryExpenses("subscriptions")],
   ];
-  let total = 0;
+  let total;
   for (let i = 0; i < categoriesTotals.length; i++) {
     if (categoriesTotals[i][1] > total) {
       total = categoriesTotals[i][0];
